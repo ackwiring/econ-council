@@ -24,7 +24,7 @@ from .lib.vault import write_note, print_save_links
 
 OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "http://localhost:11434").rstrip("/")
 OLLAMA_URL = f"{OLLAMA_HOST}/api/chat"
-DEFAULT_MODEL = os.environ.get("ECONOMICS_COUNCIL_MODEL", "gemma4")
+DEFAULT_MODEL = os.environ.get("ECONOMICS_COUNCIL_MODEL", "gemma4:latest")
 CONCURRENCY_LIMIT = 2
 
 # Define the 13 personas
