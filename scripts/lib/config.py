@@ -35,5 +35,24 @@ PERPLEXITY_RESEARCH_MODEL = get_optional("PERPLEXITY_RESEARCH_MODEL", "sonar-pro
 PERPLEXITY_DEEP_MODEL = get_optional("PERPLEXITY_DEEP_MODEL", "sonar-deep-research")
 NOTEBOOKLM_MODEL = get_optional("NOTEBOOKLM_MODEL", "gemini-2.5-flash")
 
-VAULT_PATH = Path(get_required("OBSIDIAN_VAULT_PATH")).expanduser()
+def get_vault_path() -> Path:
+    val = os.environ.get("OBSIDIAN_VAULT_PATH", "").strip()
+    if not val:
+        cwd = Path.cwd()
+        if (cwd / "GEMINI.md").exists() or (cwd / ".gemini").exists():
+            return cwd
+        default_antigravity = Path("/Users/sooty_webster/local_git_projects/Antigravity")
+        if default_antigravity.exists():
+            return default_antigravity
+        default_obsidian = Path("/Users/sooty_webster/local_git_projects/Obsidian")
+        if default_obsidian.exists():
+            return default_obsidian
+        raise SystemExit(
+            f"\nOBSIDIAN_VAULT_PATH not configured.\n"
+            f"Add it to {ENV_PATH}\n"
+            f"Or run install.sh from the obsidian-second-brain repo to set it up.\n"
+        )
+    return Path(val).expanduser()
+
+VAULT_PATH = get_vault_path()
 USAGE_LOG = Path.home() / ".research-toolkit" / "usage.log"
