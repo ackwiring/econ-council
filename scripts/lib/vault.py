@@ -89,10 +89,23 @@ def _yaml_scalar(v: Any) -> str:
     return s
 
 
+def find_obsidian_vault_root(start_path: Path) -> Path:
+    """Traverse upwards to find the directory containing the .obsidian config folder."""
+    curr = start_path.resolve()
+    for _ in range(6):
+        if (curr / ".obsidian").exists():
+            return curr
+        if curr.parent == curr:
+            break
+        curr = curr.parent
+    return VAULT_PATH
+
+
 def obsidian_uri(note_path: Path) -> str:
     """Build an obsidian://open?... URI that opens this note directly in Obsidian."""
-    vault_name = VAULT_PATH.name
-    rel = note_path.relative_to(VAULT_PATH)
+    vault_root = find_obsidian_vault_root(note_path)
+    vault_name = vault_root.name
+    rel = note_path.relative_to(vault_root)
     file_no_ext = str(rel).removesuffix(".md")
     return f"obsidian://open?vault={quote(vault_name)}&file={quote(file_no_ext)}"
 
