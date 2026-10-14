@@ -41,12 +41,13 @@ def get_vault_path() -> Path:
         cwd = Path.cwd()
         if cwd.name != "obsidian-second-brain" and ((cwd / "GEMINI.md").exists() or (cwd / ".gemini").exists()):
             return cwd
-        default_antigravity = Path("/Users/sooty_webster/local_git_projects/Antigravity")
-        if default_antigravity.exists():
-            return default_antigravity
-        default_obsidian = Path("/Users/sooty_webster/local_git_projects/Obsidian")
-        if default_obsidian.exists():
-            return default_obsidian
+        for default in (
+            Path.home() / "local_git_projects" / "Antigravity",
+            Path.home() / "local_git_projects" / "Obsidian",
+            Path.home() / "Documents" / "Obsidian Vault",
+        ):
+            if default.exists():
+                return default
         raise SystemExit(
             f"\nOBSIDIAN_VAULT_PATH not configured.\n"
             f"Add it to {ENV_PATH}\n"

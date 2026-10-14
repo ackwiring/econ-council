@@ -11,9 +11,9 @@ Use the econ-council skill. Execute `/econ-council [topic or question]`:
 This command deliberates on a complex economic question or decision by running a 13-persona specialized economics council. It executes in three stages (generation, peer review, and chairman synthesis) locally using Ollama.
 
 1. Resolve the topic or question from the user's argument. If none, ask: "What topic/decision do you want to put to the Economics Council?"
-2. Run the script from the skill root:
+2. Run the script from the skill root (the econ-council folder that holds SKILL.md, e.g. `~/.claude/skills/econ-council`):
    ```bash
-   uv run --directory "/Users/sooty_webster/local_git_projects/Skills/econ-council" -m scripts.economics_council "<topic>"
+   uv run --directory "<skill-folder>" --with requests --with python-dotenv -m scripts.economics_council "<topic>"
    ```
 3. Show the Chairman's final synthesis and recommended decision to the user.
 4. Report the absolute path of the generated markdown note in the vault (`Research/Council/`).
